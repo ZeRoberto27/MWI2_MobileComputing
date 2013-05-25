@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ParkAndRide</string>
+    <string name="action_settings">Settings</string>
+    <string name="map_not_ready">Map nicht geladen</string>
+    <string name="pr_name">Name:</string>
+    <string name="pr_district">Bezirk:</string>
+    <string name="pr_address">Adresse:</string>
+    <string name="pr_operator">Betreiber:</string>
+    <string name="pr_homepage">Homepage:</string>
+    <string name="title_activity_detail">Details</string>
+    
+    <string name="Navigate">Zum Standort navigieren</string>
+    
+
+</resources>
