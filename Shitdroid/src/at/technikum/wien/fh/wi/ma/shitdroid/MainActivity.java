@@ -2,7 +2,6 @@ package at.technikum.wien.fh.wi.ma.shitdroid;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.view.Menu;
 
 public class MainActivity extends Activity {
@@ -11,14 +10,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		OpenDataLoader loader = new OpenDataLoader();
-		try {
-			loader.loadWCAnlagen();
-		} catch (Exception e) {
-			new AlertDialog.Builder(this).setMessage(e.toString())
-					.setNeutralButton("OK", null).show();
-		}
 	}
 
 	@Override

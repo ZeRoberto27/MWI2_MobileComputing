@@ -30,6 +30,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	// my Comment / Schrolli
 
 	@Override
 	public void onClick(View v) {
@@ -40,4 +42,16 @@ public class MainActivity extends Activity implements OnClickListener {
 		Log.d("onClick", "vorname: " + vorname.getText());
 	}
 
+	public int doNothing( int x)
+	{
+		int a;
+		int b;
+		int c;
+		
+		a = 1;
+		b = 2;
+		c = a+b;
+		
+		return c;
+	}
 }
