@@ -5,7 +5,7 @@ package at.technikum.wien.fh.wi.ma.shitdroid.entity;
  * 
  * @author Robert
  */
-public class WCEntity {
+public class WcEntity {
 	private String standordId;
 	private String bezirk;
 	private String strasse;
@@ -227,7 +227,7 @@ public class WCEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		WCEntity other = (WCEntity) obj;
+		WcEntity other = (WcEntity) obj;
 		if (abteilung == null) {
 			if (other.abteilung != null)
 				return false;
@@ -293,7 +293,7 @@ public class WCEntity {
 	 */
 	@Override
 	public String toString() {
-		return "WCEntity [standordId=" + standordId + ", bezirk=" + bezirk
+		return "WcEntity [standordId=" + standordId + ", bezirk=" + bezirk
 				+ ", strasse=" + strasse + ", orientierungsNr="
 				+ orientierungsNr + ", telefon=" + telefon + ", oeffnungszeit="
 				+ oeffnungszeit + ", infomration=" + infomration
