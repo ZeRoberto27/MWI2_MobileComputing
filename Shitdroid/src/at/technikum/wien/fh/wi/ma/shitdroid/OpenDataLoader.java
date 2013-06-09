@@ -68,4 +68,13 @@ public class OpenDataLoader extends AsyncTask<String, Void, String> {
 
 		return "YES";
 	}
+
+	/* (non-Javadoc)
+	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+	 */
+	@Override
+	protected void onPostExecute(String result) {
+		// TODO Auto-generated method stub
+		super.onPostExecute(result);
+	}
 }

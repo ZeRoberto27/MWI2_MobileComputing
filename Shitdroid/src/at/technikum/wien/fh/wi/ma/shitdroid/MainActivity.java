@@ -1,8 +1,7 @@
 package at.technikum.wien.fh.wi.ma.shitdroid;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.os.Bundle;
 import android.view.Menu;
 
 public class MainActivity extends Activity {
@@ -13,6 +12,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		OpenDataLoader loader = new OpenDataLoader();
+		loader.execute("");
 	}
 
 	@Override
