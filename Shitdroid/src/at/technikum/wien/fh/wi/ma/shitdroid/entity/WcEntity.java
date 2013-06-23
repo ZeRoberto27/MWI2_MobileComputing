@@ -1,36 +1,111 @@
 package at.technikum.wien.fh.wi.ma.shitdroid.entity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.net.Uri;
+import android.provider.BaseColumns;
+import at.technikum.wien.fh.wi.ma.shitdroid.service.ShitroidContentProvider;
+
 /**
  * Entitaet fuer einen WC-Standord mit zusaetzlichen Informationen
  * 
  * @author Robert
  */
 public class WcEntity {
-	private String standordId;
+	private String standortId;
 	private String bezirk;
 	private String strasse;
 	private String orientierungsNr;
 	private String telefon;
 	private String oeffnungszeit;
-	private String infomration;
+	private String information;
 	private String abteilung;
 	private String kategorie;
-	private String laengengrad;
-	private String breitengrad;
+	private double laengengrad;
+	private double breitengrad;
 
-	/**
-	 * @return the standordId
-	 */
-	public String getStandordId() {
-		return standordId;
+	public static final class WcTable implements BaseColumns {
+		private WcTable() {
+		}
+
+		public static final Uri CONTENT_URI = Uri.parse("content://"
+				+ ShitroidContentProvider.AUTHORITY + "/wc");
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.domain.wc";
+
+		public static final String STANDORTID = "standortId";
+		public static final String BEZIRK = "bezirk";
+		public static final String STRASSE = "strasse";
+		public static final String ORIENTIERUNGSNR = "orientierungsNr";
+		public static final String TELEFON = "telefon";
+		public static final String OEFFNUNGSZEIT = "oeffnungszeit";
+		public static final String INFORMATION = "information";
+		public static final String ABTEILUNG = "abteilung";
+		public static final String KATEGORIE = "kategorie";
+		public static final String LAENGENGRAD = "laengengrad";
+		public static final String BREITENGRAD = "breitengrad";
+	}
+
+	public static final Collection<WcEntity> valueOf(JSONObject object) {
+		Collection<WcEntity> wcs = new ArrayList<WcEntity>();
+		WcEntity wc;
+		try {
+			// get root element
+			JSONArray jsonArray = object.getJSONArray("features");
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				wc = new WcEntity();
+				JSONObject json_data = jsonArray.getJSONObject(i);
+				// set id
+				wc.setStandortId(json_data.getString("id"));
+
+				JSONObject properties = json_data.getJSONObject("properties");
+
+				wc.setBezirk(properties.getString("BEZIRK"));
+				wc.setStrasse(properties.getString("STRASSE"));
+				wc.setOrientierungsNr(properties.getString("ONR"));
+				wc.setTelefon(properties.getString("TELEFON"));
+				wc.setOeffnungszeit(properties.getString("OEFFNUNGSZEIT"));
+				wc.setInformation(properties.getString("INFORMATION"));
+				wc.setAbteilung(properties.getString("ABTEILUNG"));
+				wc.setKategorie(properties.getString("KATEGORIE"));
+
+				JSONObject coordinates = json_data.getJSONObject("geometry");
+				JSONArray coordinatesArray = coordinates
+						.getJSONArray("coordinates");
+
+				wc.setLaengengrad(coordinatesArray.getDouble(0));
+				wc.setBreitengrad(coordinatesArray.getDouble(1));
+
+				wcs.add(wc);
+			}
+
+			return wcs;
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
-	 * @param standordId
-	 *            the standordId to set
+	 * @return the standortId
 	 */
-	public void setStandordId(String standordId) {
-		this.standordId = standordId;
+	public String getStandortId() {
+		return standortId;
+	}
+
+	/**
+	 * @param standortId
+	 *            the standortId to set
+	 */
+	public void setStandortId(String standortId) {
+		this.standortId = standortId;
 	}
 
 	/**
@@ -109,18 +184,18 @@ public class WcEntity {
 	}
 
 	/**
-	 * @return the infomration
+	 * @return the information
 	 */
-	public String getInfomration() {
-		return infomration;
+	public String getInformation() {
+		return information;
 	}
 
 	/**
-	 * @param infomration
-	 *            the infomration to set
+	 * @param information
+	 *            the information to set
 	 */
-	public void setInfomration(String infomration) {
-		this.infomration = infomration;
+	public void setInformation(String information) {
+		this.information = information;
 	}
 
 	/**
@@ -156,7 +231,7 @@ public class WcEntity {
 	/**
 	 * @return the laengengrad
 	 */
-	public String getLaengengrad() {
+	public double getLaengengrad() {
 		return laengengrad;
 	}
 
@@ -164,14 +239,14 @@ public class WcEntity {
 	 * @param laengengrad
 	 *            the laengengrad to set
 	 */
-	public void setLaengengrad(String laengengrad) {
+	public void setLaengengrad(double laengengrad) {
 		this.laengengrad = laengengrad;
 	}
 
 	/**
 	 * @return the breitengrad
 	 */
-	public String getBreitengrad() {
+	public double getBreitengrad() {
 		return breitengrad;
 	}
 
@@ -179,7 +254,7 @@ public class WcEntity {
 	 * @param breitengrad
 	 *            the breitengrad to set
 	 */
-	public void setBreitengrad(String breitengrad) {
+	public void setBreitengrad(double breitengrad) {
 		this.breitengrad = breitengrad;
 	}
 
@@ -195,20 +270,21 @@ public class WcEntity {
 		result = prime * result
 				+ ((abteilung == null) ? 0 : abteilung.hashCode());
 		result = prime * result + ((bezirk == null) ? 0 : bezirk.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(breitengrad);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result
-				+ ((breitengrad == null) ? 0 : breitengrad.hashCode());
-		result = prime * result
-				+ ((infomration == null) ? 0 : infomration.hashCode());
+				+ ((information == null) ? 0 : information.hashCode());
 		result = prime * result
 				+ ((kategorie == null) ? 0 : kategorie.hashCode());
-		result = prime * result
-				+ ((laengengrad == null) ? 0 : laengengrad.hashCode());
+		temp = Double.doubleToLongBits(laengengrad);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result
 				+ ((oeffnungszeit == null) ? 0 : oeffnungszeit.hashCode());
 		result = prime * result
 				+ ((orientierungsNr == null) ? 0 : orientierungsNr.hashCode());
 		result = prime * result
-				+ ((standordId == null) ? 0 : standordId.hashCode());
+				+ ((standortId == null) ? 0 : standortId.hashCode());
 		result = prime * result + ((strasse == null) ? 0 : strasse.hashCode());
 		result = prime * result + ((telefon == null) ? 0 : telefon.hashCode());
 		return result;
@@ -238,25 +314,21 @@ public class WcEntity {
 				return false;
 		} else if (!bezirk.equals(other.bezirk))
 			return false;
-		if (breitengrad == null) {
-			if (other.breitengrad != null)
-				return false;
-		} else if (!breitengrad.equals(other.breitengrad))
+		if (Double.doubleToLongBits(breitengrad) != Double
+				.doubleToLongBits(other.breitengrad))
 			return false;
-		if (infomration == null) {
-			if (other.infomration != null)
+		if (information == null) {
+			if (other.information != null)
 				return false;
-		} else if (!infomration.equals(other.infomration))
+		} else if (!information.equals(other.information))
 			return false;
 		if (kategorie == null) {
 			if (other.kategorie != null)
 				return false;
 		} else if (!kategorie.equals(other.kategorie))
 			return false;
-		if (laengengrad == null) {
-			if (other.laengengrad != null)
-				return false;
-		} else if (!laengengrad.equals(other.laengengrad))
+		if (Double.doubleToLongBits(laengengrad) != Double
+				.doubleToLongBits(other.laengengrad))
 			return false;
 		if (oeffnungszeit == null) {
 			if (other.oeffnungszeit != null)
@@ -268,10 +340,10 @@ public class WcEntity {
 				return false;
 		} else if (!orientierungsNr.equals(other.orientierungsNr))
 			return false;
-		if (standordId == null) {
-			if (other.standordId != null)
+		if (standortId == null) {
+			if (other.standortId != null)
 				return false;
-		} else if (!standordId.equals(other.standordId))
+		} else if (!standortId.equals(other.standortId))
 			return false;
 		if (strasse == null) {
 			if (other.strasse != null)
@@ -293,13 +365,12 @@ public class WcEntity {
 	 */
 	@Override
 	public String toString() {
-		return "WcEntity [standordId=" + standordId + ", bezirk=" + bezirk
+		return "WcEntity [standortId=" + standortId + ", bezirk=" + bezirk
 				+ ", strasse=" + strasse + ", orientierungsNr="
 				+ orientierungsNr + ", telefon=" + telefon + ", oeffnungszeit="
-				+ oeffnungszeit + ", infomration=" + infomration
+				+ oeffnungszeit + ", information=" + information
 				+ ", abteilung=" + abteilung + ", kategorie=" + kategorie
 				+ ", laengengrad=" + laengengrad + ", breitengrad="
 				+ breitengrad + "]";
 	}
-
 }
