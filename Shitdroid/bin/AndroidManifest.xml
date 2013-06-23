@@ -52,6 +52,11 @@
         <provider
             android:name="at.technikum.wien.fh.wi.ma.shitdroid.service.ShitroidContentProvider"
             android:authorities="at.technikum.wien.fh.wi.ma.shitdroid.service" />
+
+        <activity
+            android:name="at.technikum.wien.fh.wi.ma.shitdroid.WcDetailActivity"
+            android:label="@string/title_activity_wc_detail" >
+        </activity>
     </application>
 
 </manifest>

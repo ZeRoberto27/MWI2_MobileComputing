@@ -3,6 +3,7 @@ package at.technikum.wien.fh.wi.ma.shitdroid;
 import java.util.Collection;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,8 +15,8 @@ import at.technikum.wien.fh.wi.ma.shitdroid.service.WcService;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -118,5 +119,11 @@ public class MainActivity extends Activity implements OnInfoWindowClickListener 
 	@Override
 	public void onInfoWindowClick(Marker arg0) {
 		Log.d("onInfoWindowClick", "Method started");
+		Intent intent = new Intent(this, WcDetailActivity.class);
+		Bundle b = new Bundle();
+		//set id for detail
+		b.putString("standortid", arg0.getSnippet()); 
+		intent.putExtras(b);
+		startActivity(intent);
 	}
 }
