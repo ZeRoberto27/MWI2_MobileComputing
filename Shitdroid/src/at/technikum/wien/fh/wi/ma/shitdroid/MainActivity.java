@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 import at.technikum.wien.fh.wi.ma.shitdroid.GPS.GPSTracker;
@@ -14,9 +15,13 @@ import at.technikum.wien.fh.wi.ma.shitdroid.service.WcService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnInfoWindowClickListener {
 
 	private GoogleMap mMap;
 	private GPSTracker gpsTracker;
@@ -87,27 +92,31 @@ public class MainActivity extends Activity {
 		Collection<WcEntity> wcs = wcService.getWCs();
 		Toast.makeText(this, "Daten aus der DB geladen: " + wcs.size(),
 				Toast.LENGTH_SHORT).show();
-		// // create markes on map
-		// createMarkers(parkAndRides);
+		// Die WCs auf die MAP zeichnen
+		wcsAufDerMapEinzeichnen(wcs);
 	}
 
-	// private void createMarkers(Collection<ParkAndRide> parkAndRides) {
-	//
-	// for (ParkAndRide parkAndRide : parkAndRides) {
-	// MarkerOptions markerOptions = new MarkerOptions();
-	// markerOptions.title(parkAndRide.getGarageName());
-	// markerOptions
-	// .position(new LatLng(parkAndRide.getCoordinates()
-	// .getLatitude(), parkAndRide.getCoordinates()
-	// .getLongitude()));
-	// markerOptions.icon(BitmapDescriptorFactory
-	// .fromResource(R.drawable.ic_launcher));
-	// // set the id for detail activity
-	// markerOptions.snippet(parkAndRide.getId());
-	// mMap.addMarker(markerOptions);
-	// // set onclick listener
-	// mMap.setOnInfoWindowClickListener(this);
-	// }
-	//
-	// }
+	private void wcsAufDerMapEinzeichnen(Collection<WcEntity> wcs) {
+		Toast.makeText(this, "WCs werden eingezeichnet", Toast.LENGTH_SHORT)
+				.show();
+		for (WcEntity wc : wcs) {
+			MarkerOptions markerOptions = new MarkerOptions();
+			markerOptions.title(wc.getStrasse());
+			markerOptions.position(new LatLng(wc.getBreitengrad(), wc
+					.getLaengengrad()));
+			markerOptions.icon(BitmapDescriptorFactory
+					.fromResource(R.drawable.ic_launcher));
+			// set the id for detail activity
+			markerOptions.snippet(wc.getStandortId());
+			mMap.addMarker(markerOptions);
+			// set onclick listener
+			mMap.setOnInfoWindowClickListener(this);
+		}
+
+	}
+
+	@Override
+	public void onInfoWindowClick(Marker arg0) {
+		Log.d("onInfoWindowClick", "Method started");
+	}
 }
