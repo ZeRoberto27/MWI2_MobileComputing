@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements OnInfoWindowClickListener 
 		return true;
 	}
 
-	/* zum Positionieren */
+	/* get current position and position the map */
 	private void setUpMapIfNeeded() {
 		gpsTracker = new GPSTracker(this);
 		if (gpsTracker.canGetLocation()) {
@@ -68,7 +68,7 @@ public class MainActivity extends Activity implements OnInfoWindowClickListener 
 		// Do a null check to confirm that we have not already instantiated the
 		// map.
 		if (mMap == null) {
-			// Try to obtain the map from the SupportMapFragment.
+			// Try to obtain the map from the MapFragment.
 			mMap = ((MapFragment) getFragmentManager().findFragmentById(
 					R.id.map)).getMap();
 			// Check if we were successful in obtaining the map.
@@ -80,10 +80,10 @@ public class MainActivity extends Activity implements OnInfoWindowClickListener 
 
 	protected void setUpMap() {
 		mMap.setMyLocationEnabled(true);
-		// 2.0 and 21.0 where 2.0 is maximum zoom out and 21.0 is maximum zoom
-		// in
+		// 12 could be too high level view, 14 probably OK
+		// 
 		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-				latitude, longitude), 12.0f));
+				latitude, longitude), 14.0f));
 	}
 
 	public void loadCompleted() {
