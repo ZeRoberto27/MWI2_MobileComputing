@@ -78,7 +78,8 @@ public class WcDetailActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		Intent intent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse("google.navigation:q=" + wc.getBreitengrad() + ","
-						+ wc.getLaengengrad()));
+						+ wc.getLaengengrad()+"&mode=walking"));
+		// mode=walking schaltet auf Fuﬂg‰ngernavigation
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
